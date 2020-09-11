@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mini Project</title>
+</head>
+<style>
+    body {
+        background-color: rgb(255, 223, 118);
+        margin: 20px;
+        padding: 1px;
+    }
+
+    canvas {
+        border: 1px solid black;
+        width: 520px;
+        height: 420px;
+    }
+
+    #paragraph {
+        font-size: 35px;
+    }
+</style>
+
+<body>
+    <div id="main">
+        <h1>Filter Fun</h1>
+        <canvas id="d1"></canvas>
+        <p id="paragraph">
+            <b>Load Image</b><br>
+            <input type="file" multiple="false" accept="image/*" id="finput" onchange="upload()">
+            <br>
+            <b>Choose Filter</b><br>
+            <input type="button" value="GrayScale" id="Ginput" onclick="GrayScale()">
+            <br>
+            <input type="button" value="Red" id="Ginput" onclick="RedFilter()">
+            <br>
+            <input type="button" value="Reset image" id="Ginput" onclick="Reset()">
+        </p>
+    </div>
+</body>
+<script>
+    var image;
+    var fileInput;//global variable of image.
+    function upload() {
+        var imgCanvas = document.getElementById("d1");
+        fileInput = document.getElementById("finput");
+        image = new SimpleImage(fileInput);
+        image.drawTo(imgCanvas);
+    }
+    function GrayScale() {
+        var img = image;
+        for (var pixel of img.values()) {
+            var avg = (pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3;
+            pixel.setRed(avg);
+            pixel.setGreen(avg);
+            pixel.setBlue(avg);
+        }
+        var imgCanvas = document.getElementById("d1");
+        img.drawTo(imgCanvas);
+    }
+    function RedFilter() {
+        var img = image;
+        for (var pixel of img.values()) {
+            var avg = Math.floor((pixel.getRed() + pixel.getGreen() + pixel.getBlue()) / 3);
+            if (avg < 128) {
+                pixel.setRed(255);
+                pixel.setGreen(0);
+                pixel.setBlue(0);
+            }
+        }
+        var imgCanvas = document.getElementById("d1");
+        img.drawTo(imgCanvas);
+    }
+    function Reset() {
+        var imgCanvas = document.getElementById("d1");
+        image = new SimpleImage(fileInput);
+        image.drawTo(imgCanvas);
+    }
+</script>
+
+<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
+
+</html>
